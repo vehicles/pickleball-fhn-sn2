@@ -35,18 +35,15 @@
         .btn-fast:hover {
             background-color: var(--fast-dark);
         }
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+        @keyframes pulse-live {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        .animate-live {
+            animation: pulse-live 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--fast-primary);
-            border-radius: 4px;
-        }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: var(--fast-primary); border-radius: 4px; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between">
@@ -89,7 +86,7 @@
                 <i class="fa-solid fa-circle-info"></i> Tổng quan & Thể thức
             </button>
             <button onclick="switchTab('players')" class="tab-btn px-5 py-2.5 rounded-xl font-bold text-sm bg-white text-gray-700 hover:bg-gray-100 shadow transition flex items-center gap-2" data-tab="players">
-                <i class="fa-solid fa-users"></i> Danh sách
+                <i class="fa-solid fa-users"></i> Danh sách VĐV
             </button>
             <button onclick="switchTab('groupstage')" class="tab-btn px-5 py-2.5 rounded-xl font-bold text-sm bg-white text-gray-700 hover:bg-gray-100 shadow transition flex items-center gap-2" data-tab="groupstage">
                 <i class="fa-solid fa-table-cells"></i> Vòng Bảng
@@ -175,7 +172,7 @@
             <div class="bg-white rounded-2xl shadow-md p-6">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                     <div>
-                        <h2 class="text-xl font-bold text-fast-dark">Danh sách</h2>    
+                        <h2 class="text-xl font-bold text-fast-dark">Danh Sách Thành Viên Các Team</h2>    
                     </div>
                     <div id="adminNotice" class="hidden text-xs bg-amber-50 border border-amber-200 text-amber-800 px-3 py-2 rounded-lg">
                         <i class="fa-solid fa-triangle-exclamation mr-1"></i> Bạn đang có quyền chỉnh sửa. Thay đổi sẽ lưu tự động.
@@ -308,7 +305,6 @@
     <!-- SCRIPT LOGIC -->
     <script>
         // --- CẤU HÌNH FIREBASE REALTIME DATABASE ---
-        // (Thay thế các thông số bên dưới bằng Firebase Config của dự án thực tế của bạn)
         const firebaseConfig = {
          apiKey: "AIzaSyBpEqXWixeZM0ecwr_yL13t9SGfseRtgEY",
          authDomain: "pickleball-tct70.firebaseapp.com",
@@ -320,7 +316,6 @@
          measurementId: "G-CG8E9J8S2W"
         };
 
-        // Khởi tạo Firebase
         let db;
         try {
             firebase.initializeApp(firebaseConfig);
@@ -377,23 +372,19 @@
             group2Matches: generateRoundRobinMatches('D', 'E', 'F', 'g2')
         };
 
-        // --- CƠ CHẾ ĐỒNG BỘ DỮ LIỆU REAL-TIME (FIREBASE & LOCALSTORAGE) ---
+        // --- CƠ CHẾ ĐỒNG BỘ DỮ LIỆU REAL-TIME ---
         function loadData() {
             if (db) {
-                // Lắng nghe thay đổi liên tục từ Firebase Realtime Database
-                db.ref('fhn_pickleball_tournament').on('snapshot', (snapshot) => {}); // giữ chỗ
                 db.ref('fhn_pickleball_tournament').on('value', (snapshot) => {
                     const serverData = snapshot.val();
                     if (serverData) {
                         tournamentData = serverData;
                         renderAll();
                     } else {
-                        // Nếu database trống, đẩy dữ liệu mẫu lên
                         db.ref('fhn_pickleball_tournament').set(tournamentData);
                     }
                 });
             } else {
-                // Fallback nếu không dùng Firebase: Dùng localStorage
                 const saved = localStorage.getItem('pickle_tournament_data_v7');
                 if (saved) {
                     try { tournamentData = JSON.parse(saved); } catch(e) { console.error(e); }
@@ -403,12 +394,10 @@
 
         function saveData() {
             if (db) {
-                // Đẩy dữ liệu mới lên Firebase Realtime Database
                 db.ref('fhn_pickleball_tournament').set(tournamentData).catch((error) => {
                     console.error("Lỗi đồng bộ Firebase: ", error);
                 });
             } else {
-                // Fallback LocalStorage
                 localStorage.setItem('pickle_tournament_data_v7', JSON.stringify(tournamentData));
             }
         }
@@ -517,9 +506,9 @@
                         `;
                     } else {
                         html += `
-                            <div class="text-sm bg-gray-50 px-2.5 py-1.5 rounded-lg border flex items-center justify-between">
-                                <span class="text-gray-500 text-xs">${key}${i+1}:</span>
-                                <span class="font-semibold text-gray-800">${memberName || '(Chưa nhập)'}</span>
+                            <div class="text-sm bg-gray-50 px-3 py-2 rounded-lg border flex items-center justify-between">
+                                <span class="text-gray-500 font-medium text-xs">${key}${i+1}:</span>
+                                <span class="font-bold text-gray-800">${memberName || '(Chưa cập nhật)'}</span>
                             </div>
                         `;
                     }
@@ -624,19 +613,27 @@
 
         function renderMatchCard(match, targetScore, groupKey, indexNum) {
             let isCompleted = match.status === 'completed';
+            let isLive = (match.score1 > 0 || match.score2 > 0) && !isCompleted;
             let t1Members = tournamentData.teams[match.t1].members;
             let t2Members = tournamentData.teams[match.t2].members;
 
             let pair1Label = `${t1Members[match.p1Idx1] || match.t1} & ${t1Members[match.p1Idx2] || match.t1}`;
             let pair2Label = `${t2Members[match.p2Idx1] || match.t2} & ${t2Members[match.p2Idx2] || match.t2}`;
 
+            let statusBadge = '';
+            if (isCompleted) {
+                statusBadge = '<span class="px-2.5 py-0.5 rounded font-semibold bg-green-100 text-green-800"><i class="fa-solid fa-check mr-1"></i> Đã kết thúc</span>';
+            } else if (isLive) {
+                statusBadge = '<span class="px-2.5 py-0.5 rounded font-semibold bg-red-100 text-red-600 animate-live"><i class="fa-solid fa-circle text-[8px] mr-1"></i> LIVE</span>';
+            } else {
+                statusBadge = '<span class="px-2.5 py-0.5 rounded font-semibold bg-yellow-100 text-yellow-800">Chờ thi đấu</span>';
+            }
+
             return `
                 <div class="bg-gray-50 border rounded-xl p-4 shadow-sm flex flex-col justify-between space-y-3">
                     <div class="flex justify-between items-center text-xs border-b pb-2">
                         <span class="font-bold text-fast-dark uppercase">Trận ${indexNum}: Team ${match.t1} vs Team ${match.t2} (${match.desc})</span>
-                        <span class="px-2 py-0.5 rounded font-semibold ${isCompleted ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}">
-                            ${isCompleted ? '<i class="fa-solid fa-check mr-1"></i> Đã kết thúc' : 'Đang diễn ra'}
-                        </span>
+                        ${statusBadge}
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs bg-white p-2.5 rounded-lg border">
@@ -802,13 +799,14 @@
 
         function renderFinalCard(match, borderStyle, title) {
             let isCompleted = match.status === 'completed';
+            let isLive = (match.score1 > 0 || match.score2 > 0) && !isCompleted;
+            let badge = isCompleted ? '<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-green-100 text-green-800"><i class="fa-solid fa-check mr-1"></i> Đã kết thúc</span>' : (isLive ? '<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-red-100 text-red-600 animate-live"><i class="fa-solid fa-circle text-[8px] mr-1"></i> LIVE</span>' : '<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800">Rally Scoring (31đ)</span>');
+
             return `
                 <div class="bg-white border-2 ${borderStyle} rounded-2xl p-6 shadow-md space-y-4">
                     <div class="flex justify-between items-center border-b pb-3">
                         <h3 class="font-extrabold text-lg text-fast-dark flex items-center gap-2"><i class="fa-solid fa-medal text-amber-500"></i> ${title}</h3>
-                        <span class="px-2.5 py-1 rounded-full text-xs font-bold ${isCompleted ? 'bg-green-100 text-green-800' : 'bg-amber-100 text-amber-800'}">
-                            ${isCompleted ? '<i class="fa-solid fa-check mr-1"></i> Đã kết thúc' : 'Rally Scoring (31đ)'}
-                        </span>
+                        ${badge}
                     </div>
 
                     <div class="grid grid-cols-5 items-center gap-2 text-center py-2">
