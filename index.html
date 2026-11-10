@@ -151,7 +151,7 @@
                     </h3>
                     <ul class="space-y-2 text-sm text-gray-700">
                         <li class="bg-gray-50 p-2.5 rounded-lg flex items-center justify-between">
-                            <span class="font-semibold">Tranh Giải Nhất - Nhì:</span>
+                            <span class="font-semibold">Tranh Giải Vô Địch:</span>
                             <span class="text-xs bg-amber-100 text-amber-800 px-2 py-1 rounded font-bold">2 Team nhất bảng</span>
                         </li>
                         <li class="bg-gray-50 p-2.5 rounded-lg flex items-center justify-between">
@@ -190,7 +190,7 @@
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
                     <div>
                         <h2 class="text-xl font-bold text-blue-700 flex items-center gap-2">
-                            <i class="fa-solid fa-shield"></i> NHÓM I: Team A, Team B, Team C
+                            <i class="fa-solid fa-shield"></i> NHÓM I
                         </h2>                        
                     </div>
                 </div>
@@ -220,7 +220,7 @@
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
                     <div>
                         <h2 class="text-xl font-bold text-emerald-700 flex items-center gap-2">
-                            <i class="fa-solid fa-shield"></i> NHÓM II: Team D, Team E, Team F
+                            <i class="fa-solid fa-shield"></i> NHÓM II
                         </h2>                        
                     </div>
                 </div>
@@ -277,7 +277,8 @@
     <!-- FOOTER -->
     <footer class="bg-gray-800 text-gray-300 py-6 px-4 mt-12 text-center text-xs">
         <div class="max-w-7xl mx-auto space-y-2">
-            <p class="font-semibold text-white">FAST Pickleball Club</p>            
+            <p class="font-semibold text-white">FAST Pickleball Club</p>
+            <p>Phần mềm điều hành giải đấu nội bộ.</p>
         </div>
     </footer>
 
@@ -429,7 +430,7 @@
 
             if (isAdmin) {
                 badge.className = 'px-3 py-1 rounded-lg text-xs font-bold bg-green-600 text-white shadow';
-                badge.innerHTML = '<i class="fa-solid fa-shield-halved mr-1"></i> Chế độ: Trọng tài/BTC';
+                badge.innerHTML = '<i class="fa-solid fa-shield-halved mr-1"></i> Chế độ:';
                 authBtn.classList.add('hidden');
                 logoutBtn.classList.remove('hidden');
                 roleDesc.textContent = '';
@@ -761,7 +762,7 @@
 
             let container = document.getElementById('finalsContainer');
             container.innerHTML = `
-                ${renderFinalCard(tournamentData.finals.final1, 'bg-amber-50 border-amber-300', '🏆 Tranh Vô Địch')}
+                ${renderFinalCard(tournamentData.finals.final1, 'bg-amber-50 border-amber-300', '🏆 Tranh Giải Nhất - Nhì')}
                 ${renderFinalCard(tournamentData.finals.final3, 'bg-orange-50 border-orange-300', '🥉 Tranh Giải Ba')}
             `;
         }
