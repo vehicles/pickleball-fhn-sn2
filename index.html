@@ -66,7 +66,7 @@
                 <div class="flex items-center gap-2">
                     <span id="roleBadge" class="px-3 py-1 rounded-lg text-xs font-bold bg-blue-600 text-white shadow"><i class="fa-solid fa-eye mr-1"></i> Chế độ: Khán giả</span>
                     <button onclick="openAuthModal()" id="authBtn" class="bg-white text-[#00686B] hover:bg-yellow-300 font-bold px-3 py-1.5 rounded-lg text-xs transition shadow">
-                        <i class="fa-solid fa-lock mr-1"></i> Đăng nhập Trọng tài/BTC
+                        <i class="fa-solid fa-lock mr-1"></i> Đăng nhập
                     </button>
                     <button onclick="logoutAdmin()" id="logoutBtn" class="hidden bg-red-500 text-white hover:bg-red-600 font-bold px-3 py-1.5 rounded-lg text-xs transition shadow">
                         <i class="fa-solid fa-right-from-bracket mr-1"></i> Đăng xuất
@@ -172,8 +172,7 @@
             <div class="bg-white rounded-2xl shadow-md p-6">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                     <div>
-                        <h2 class="text-xl font-bold text-fast-dark">Quản lý Danh sách 24 Vận Động Viên</h2>
-                        <p class="text-xs text-gray-500 mt-1">Nhập tên VĐV cho từng Team. Tên sẽ tự động đồng bộ sang tất cả các trận đấu vòng bảng và chung kết.</p>
+                        <h2 class="text-xl font-bold text-fast-dark">Danh sách</h2>                        
                     </div>
                     <div id="adminNotice" class="hidden text-xs bg-amber-50 border border-amber-200 text-amber-800 px-3 py-2 rounded-lg">
                         <i class="fa-solid fa-triangle-exclamation mr-1"></i> Bạn đang có quyền chỉnh sửa. Thay đổi sẽ lưu tự động.
@@ -191,9 +190,8 @@
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
                     <div>
                         <h2 class="text-xl font-bold text-blue-700 flex items-center gap-2">
-                            <i class="fa-solid fa-shield"></i> NHÓM I: Team A, Team B, Team C (Tổng 12 Trận)
-                        </h2>
-                        <p class="text-xs text-gray-500">Mỗi cặp đối đầu đấu 4 trận đầy đủ (A12-B12, A34-B34, A14-B14, A23-B23...). Chạm 11 điểm kết thúc.</p>
+                            <i class="fa-solid fa-shield"></i> NHÓM I: Team A, Team B, Team C
+                        </h2>                        
                     </div>
                 </div>
 
@@ -213,7 +211,7 @@
                     </table>
                 </div>
 
-                <h3 class="font-bold text-gray-800 mb-3 text-sm uppercase tracking-wider"><i class="fa-solid fa-futbol mr-1 text-blue-600"></i> 12 Trận đấu Nhóm I</h3>
+                <h3 class="font-bold text-gray-800 mb-3 text-sm uppercase tracking-wider"><i class="fa-solid fa-futbol mr-1 text-blue-600"></i> Trận đấu Nhóm I</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="matchesGroup1"></div>
             </div>
 
@@ -222,9 +220,8 @@
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
                     <div>
                         <h2 class="text-xl font-bold text-emerald-700 flex items-center gap-2">
-                            <i class="fa-solid fa-shield"></i> NHÓM II: Team D, Team E, Team F (Tổng 12 Trận)
-                        </h2>
-                        <p class="text-xs text-gray-500">Mỗi cặp đối đầu đấu 4 trận đầy đủ (D12-E12, D34-E34, D14-E14, D23-E23...). Chạm 11 điểm kết thúc.</p>
+                            <i class="fa-solid fa-shield"></i> NHÓM II: Team D, Team E, Team F
+                        </h2>                        
                     </div>
                 </div>
 
@@ -244,7 +241,7 @@
                     </table>
                 </div>
 
-                <h3 class="font-bold text-gray-800 mb-3 text-sm uppercase tracking-wider"><i class="fa-solid fa-futbol mr-1 text-emerald-600"></i> 12 Trận đấu Nhóm II</h3>
+                <h3 class="font-bold text-gray-800 mb-3 text-sm uppercase tracking-wider"><i class="fa-solid fa-futbol mr-1 text-emerald-600"></i> Trận đấu Nhóm II</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="matchesGroup2"></div>
             </div>
         </div>
@@ -265,7 +262,7 @@
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
                     <div>
                         <h2 class="text-xl font-bold text-fast-dark flex items-center gap-2">
-                            <i class="fa-solid fa-trophy text-amber-500"></i> Vòng Chung Kết (Rally Scoring - Chạm 31 điểm)
+                            <i class="fa-solid fa-trophy text-amber-500"></i> Vòng Chung Kết
                         </h2>
                         <p class="text-xs text-gray-500 mt-1">Hệ thống tự động nhận diện Team nhất bảng (Tranh Nhất - Nhì) và Team nhì bảng (Tranh Ba) từ kết quả Vòng Bảng.</p>
                     </div>
@@ -280,8 +277,7 @@
     <!-- FOOTER -->
     <footer class="bg-gray-800 text-gray-300 py-6 px-4 mt-12 text-center text-xs">
         <div class="max-w-7xl mx-auto space-y-2">
-            <p class="font-semibold text-white">FAST Pickleball Club</p>
-            <p>----------------*----------------</p>
+            <p class="font-semibold text-white">FAST Pickleball Club</p>            
         </div>
     </footer>
 
@@ -289,7 +285,7 @@
     <div id="authModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
         <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl space-y-4">
             <div class="flex justify-between items-center">
-                <h3 class="font-bold text-lg text-fast-dark"><i class="fa-solid fa-lock mr-2 text-fast-primary"></i> Đăng nhập Trọng tài/BTC</h3>
+                <h3 class="font-bold text-lg text-fast-dark"><i class="fa-solid fa-lock mr-2 text-fast-primary"></i> Đăng nhập</h3>
                 <button onclick="closeAuthModal()" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <p class="text-xs text-gray-500">Vui lòng nhập mật khẩu quản trị để mở khóa quyền chỉnh sửa VĐV và cập nhật tỷ số trận đấu.</p>
@@ -311,7 +307,6 @@
     <script>
         let isAdmin = false;
 
-        // Helper tạo 12 trận cho 3 đội vòng tròn (mỗi cặp đấu 4 trận: 1-2, 3-4, 1-4, 2-3)
         function generateRoundRobinMatches(t1, t2, t3, prefix) {
             let pairs = [
                 { tA: t1, tB: t2, p1: 0, p2: 1, q1: 0, q2: 1, label: '1 & 2' },
@@ -358,16 +353,29 @@
             group2Matches: generateRoundRobinMatches('D', 'E', 'F', 'g2')
         };
 
+        // Realtime LocalStorage Sync & Save
         function loadData() {
-            const saved = localStorage.getItem('pickle_tournament_data_v6');
+            const saved = localStorage.getItem('pickle_tournament_data_v7');
             if (saved) {
                 try { tournamentData = JSON.parse(saved); } catch(e) { console.error(e); }
             }
         }
 
         function saveData() {
-            localStorage.setItem('pickle_tournament_data_v6', JSON.stringify(tournamentData));
+            localStorage.setItem('pickle_tournament_data_v7', JSON.stringify(tournamentData));
         }
+
+        // Lắng nghe sự kiện storage realtime từ các tab / thiết bị khác
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'pickle_tournament_data_v7') {
+                if (e.newValue) {
+                    try {
+                        tournamentData = JSON.parse(e.newValue);
+                        renderAll();
+                    } catch(err) { console.error(err); }
+                }
+            }
+        });
 
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
@@ -424,14 +432,14 @@
                 badge.innerHTML = '<i class="fa-solid fa-shield-halved mr-1"></i> Chế độ: Trọng tài/BTC';
                 authBtn.classList.add('hidden');
                 logoutBtn.classList.remove('hidden');
-                roleDesc.textContent = 'Bạn có toàn quyền chỉnh sửa VĐV và cập nhật tỷ số trận đấu.';
+                roleDesc.textContent = '';
                 adminNotice.classList.remove('hidden');
             } else {
                 badge.className = 'px-3 py-1 rounded-lg text-xs font-bold bg-blue-600 text-white shadow';
                 badge.innerHTML = '<i class="fa-solid fa-eye mr-1"></i> Chế độ: Khán giả';
                 authBtn.classList.remove('hidden');
                 logoutBtn.classList.add('hidden');
-                roleDesc.textContent = 'Bạn đang xem ở quyền Khán giả (Chỉ xem).';
+                roleDesc.textContent = '';
                 adminNotice.classList.add('hidden');
             }
         }
@@ -467,7 +475,7 @@
                         html += `
                             <div>
                                 <label class="text-[11px] font-semibold text-gray-500">Thành viên ${i+1} (${key}${i+1}):</label>
-                                <input type="text" value="${memberName}" onchange="updateMember('${key}', ${i}, this.value)" 
+                                <input type="text" value="${memberName}" oninput="updateMember('${key}', ${i}, this.value)" 
                                     class="w-full text-sm px-2.5 py-1.5 border rounded-lg focus:ring-2 focus:ring-[#00979C] outline-none">
                             </div>
                         `;
@@ -488,7 +496,8 @@
         function updateMember(teamKey, index, val) {
             tournamentData.teams[teamKey].members[index] = val;
             saveData();
-            renderAll();
+            // Cập nhật ngầm giao diện các trận mà không làm mất focus input hiện tại
+            renderGroupStageSilent();
         }
 
         function calculateStandings(groupMatches, teamKeys) {
@@ -555,6 +564,27 @@
                 </tr>
             `).join('');
 
+            document.getElementById('matchesGroup2').innerHTML = tournamentData.group2Matches.map((m, i) => renderMatchCard(m, 11, 'group2Matches', i + 1)).join('');
+        }
+
+        // Render ngầm không rebuild toàn bộ danh sách VĐV để tránh mất focus khi gõ phím
+        function renderGroupStageSilent() {
+            let s1 = calculateStandings(tournamentData.group1Matches, ['A', 'B', 'C']);
+            document.getElementById('standingsGroup1').innerHTML = s1.map((st, idx) => `
+                <tr class="border-b hover:bg-gray-50">
+                    <td class="p-3 font-bold flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-blue-100 text-blue-800 flex items-center justify-center text-xs">${idx+1}</span>
+                        Team ${st.key}
+                    </td>
+                    <td class="p-3 text-center">${st.played}</td>
+                    <td class="p-3 text-center text-green-600 font-semibold">${st.won}</td>
+                    <td class="p-3 text-center text-red-600 font-semibold">${st.lost}</td>
+                    <td class="p-3 text-center ${st.diff >= 0 ? 'text-blue-600' : 'text-red-500'} font-semibold">${st.diff > 0 ? '+' + st.diff : st.diff}</td>
+                    <td class="p-3 text-center font-extrabold text-fast-dark text-base">${st.points}</td>
+                </tr>
+            `).join('');
+
+            document.getElementById('matchesGroup1').innerHTML = tournamentData.group1Matches.map((m, i) => renderMatchCard(m, 11, 'group1Matches', i + 1)).join('');
             document.getElementById('matchesGroup2').innerHTML = tournamentData.group2Matches.map((m, i) => renderMatchCard(m, 11, 'group2Matches', i + 1)).join('');
         }
 
@@ -731,7 +761,7 @@
 
             let container = document.getElementById('finalsContainer');
             container.innerHTML = `
-                ${renderFinalCard(tournamentData.finals.final1, 'bg-amber-50 border-amber-300', '🏆 Tranh Giải Nhất - Nhì')}
+                ${renderFinalCard(tournamentData.finals.final1, 'bg-amber-50 border-amber-300', '🏆 Tranh Vô Địch')}
                 ${renderFinalCard(tournamentData.finals.final3, 'bg-orange-50 border-orange-300', '🥉 Tranh Giải Ba')}
             `;
         }
