@@ -8,6 +8,9 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase App & Realtime Database CDN -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
     <style>
         :root {
             --fast-primary: #00979C;
@@ -72,7 +75,7 @@
                         <i class="fa-solid fa-right-from-bracket mr-1"></i> Đăng xuất
                     </button>
                 </div>
-                <span class="text-[11px] text-teal-100 italic" id="roleDesc">Bạn đang xem ở quyền Khán giả.</span>
+                <span class="text-[11px] text-teal-100 italic" id="roleDesc"></span>
             </div>
         </div>
     </header>
@@ -172,7 +175,7 @@
             <div class="bg-white rounded-2xl shadow-md p-6">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                     <div>
-                        <h2 class="text-xl font-bold text-fast-dark">Danh sách</h2>                        
+                        <h2 class="text-xl font-bold text-fast-dark">Danh sách</h2>    
                     </div>
                     <div id="adminNotice" class="hidden text-xs bg-amber-50 border border-amber-200 text-amber-800 px-3 py-2 rounded-lg">
                         <i class="fa-solid fa-triangle-exclamation mr-1"></i> Bạn đang có quyền chỉnh sửa. Thay đổi sẽ lưu tự động.
@@ -191,7 +194,7 @@
                     <div>
                         <h2 class="text-xl font-bold text-blue-700 flex items-center gap-2">
                             <i class="fa-solid fa-shield"></i> NHÓM I
-                        </h2>                        
+                        </h2>    
                     </div>
                 </div>
 
@@ -221,7 +224,7 @@
                     <div>
                         <h2 class="text-xl font-bold text-emerald-700 flex items-center gap-2">
                             <i class="fa-solid fa-shield"></i> NHÓM II
-                        </h2>                        
+                        </h2>    
                     </div>
                 </div>
 
@@ -251,7 +254,7 @@
             <div class="bg-gradient-to-br from-amber-50 via-white to-amber-100 rounded-3xl shadow-xl p-6 border-2 border-amber-300">
                 <div class="text-center space-y-2 mb-6">
                     <span class="bg-amber-400 text-amber-900 text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-widest"><i class="fa-solid fa-award mr-1"></i> Bục Vinh Quang</span>
-                    <h2 class="text-2xl font-black text-amber-900">BẢNG THÀNH TÍCH CHUNG CUỘC</h2>                    
+                    <h2 class="text-2xl font-black text-amber-900">BẢNG THÀNH TÍCH CHUNG CUỘC</h2>    
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end max-w-4xl mx-auto" id="podiumContainer"></div>
@@ -262,7 +265,7 @@
                     <div>
                         <h2 class="text-xl font-bold text-fast-dark flex items-center gap-2">
                             <i class="fa-solid fa-trophy text-amber-500"></i> Vòng Chung Kết
-                        </h2>                        
+                        </h2>    
                     </div>
                 </div>
 
@@ -304,6 +307,28 @@
 
     <!-- SCRIPT LOGIC -->
     <script>
+        // --- CẤU HÌNH FIREBASE REALTIME DATABASE ---
+        // (Thay thế các thông số bên dưới bằng Firebase Config của dự án thực tế của bạn)
+        const firebaseConfig = {
+         apiKey: "AIzaSyBpEqXWixeZM0ecwr_yL13t9SGfseRtgEY",
+         authDomain: "pickleball-tct70.firebaseapp.com",
+         databaseURL: "https://pickleball-tct70-default-rtdb.asia-southeast1.firebasedatabase.app",
+         projectId: "pickleball-tct70",
+         storageBucket: "pickleball-tct70.firebasestorage.app",
+         messagingSenderId: "1015003889551",
+         appId: "1:1015003889551:web:609af4b91d27eb7a8a55fa",
+         measurementId: "G-CG8E9J8S2W"
+        };
+
+        // Khởi tạo Firebase
+        let db;
+        try {
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.database();
+        } catch (e) {
+            console.warn("Chưa cấu hình Firebase chính xác, ứng dụng đang chạy chế độ lưu cục bộ dự phòng.");
+        }
+
         let isAdmin = false;
 
         function generateRoundRobinMatches(t1, t2, t3, prefix) {
@@ -352,29 +377,41 @@
             group2Matches: generateRoundRobinMatches('D', 'E', 'F', 'g2')
         };
 
-        // Realtime LocalStorage Sync & Save
+        // --- CƠ CHẾ ĐỒNG BỘ DỮ LIỆU REAL-TIME (FIREBASE & LOCALSTORAGE) ---
         function loadData() {
-            const saved = localStorage.getItem('pickle_tournament_data_v7');
-            if (saved) {
-                try { tournamentData = JSON.parse(saved); } catch(e) { console.error(e); }
+            if (db) {
+                // Lắng nghe thay đổi liên tục từ Firebase Realtime Database
+                db.ref('fhn_pickleball_tournament').on('snapshot', (snapshot) => {}); // giữ chỗ
+                db.ref('fhn_pickleball_tournament').on('value', (snapshot) => {
+                    const serverData = snapshot.val();
+                    if (serverData) {
+                        tournamentData = serverData;
+                        renderAll();
+                    } else {
+                        // Nếu database trống, đẩy dữ liệu mẫu lên
+                        db.ref('fhn_pickleball_tournament').set(tournamentData);
+                    }
+                });
+            } else {
+                // Fallback nếu không dùng Firebase: Dùng localStorage
+                const saved = localStorage.getItem('pickle_tournament_data_v7');
+                if (saved) {
+                    try { tournamentData = JSON.parse(saved); } catch(e) { console.error(e); }
+                }
             }
         }
 
         function saveData() {
-            localStorage.setItem('pickle_tournament_data_v7', JSON.stringify(tournamentData));
-        }
-
-        // Lắng nghe sự kiện storage realtime từ các tab / thiết bị khác
-        window.addEventListener('storage', function(e) {
-            if (e.key === 'pickle_tournament_data_v7') {
-                if (e.newValue) {
-                    try {
-                        tournamentData = JSON.parse(e.newValue);
-                        renderAll();
-                    } catch(err) { console.error(err); }
-                }
+            if (db) {
+                // Đẩy dữ liệu mới lên Firebase Realtime Database
+                db.ref('fhn_pickleball_tournament').set(tournamentData).catch((error) => {
+                    console.error("Lỗi đồng bộ Firebase: ", error);
+                });
+            } else {
+                // Fallback LocalStorage
+                localStorage.setItem('pickle_tournament_data_v7', JSON.stringify(tournamentData));
             }
-        });
+        }
 
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
@@ -495,7 +532,6 @@
         function updateMember(teamKey, index, val) {
             tournamentData.teams[teamKey].members[index] = val;
             saveData();
-            // Cập nhật ngầm giao diện các trận mà không làm mất focus input hiện tại
             renderGroupStageSilent();
         }
 
@@ -566,7 +602,6 @@
             document.getElementById('matchesGroup2').innerHTML = tournamentData.group2Matches.map((m, i) => renderMatchCard(m, 11, 'group2Matches', i + 1)).join('');
         }
 
-        // Render ngầm không rebuild toàn bộ danh sách VĐV để tránh mất focus khi gõ phím
         function renderGroupStageSilent() {
             let s1 = calculateStandings(tournamentData.group1Matches, ['A', 'B', 'C']);
             document.getElementById('standingsGroup1').innerHTML = s1.map((st, idx) => `
